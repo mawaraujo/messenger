@@ -77,7 +77,7 @@ export default {
 
         async getCurrentUser() {
             try {
-                const response = await this.axios.get('http://localhost:8000/api/user') 
+                const response = await this.axios.get('user') 
                 const data = response.data
                 console.log(data)
             } catch (error) {

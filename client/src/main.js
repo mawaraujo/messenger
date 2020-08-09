@@ -18,6 +18,7 @@ const router = new VueRouter({
   mode: 'history', routes
 })
 
+// Vue Navigation Guards
 router.beforeEach((to, from, next) => {
   if(to.meta.isPublic === false && !isAuthenticated()) {
     return next({ path: '/login' })
@@ -34,11 +35,13 @@ router.beforeEach((to, from, next) => {
   return next()
 })  
 
+// Axios config
 if(isAuthenticated) {
     axios.interceptors.request.use(
       config => {
         return {
           ...config,
+          baseURL: 'http://localhost:8000/api/',
           headers: {
             'Authorization': isAuthenticated() ? 'Bearer ' + isAuthenticated() : null,
             'Content-Type': 'application/json'

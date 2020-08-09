@@ -41,11 +41,18 @@ export default {
     methods: {
         ...mapMutations(['destroySession']),
 
-        handleLogout() {
-            this.destroySession()
-            window.localStorage.removeItem('auth_token')
-            window.localStorage.removeItem('auth_user')
-            this.$router.push('/login')
+        async handleLogout() {
+
+            this.axios.post('logout')
+            .then(response => {
+
+                console.log(response.data)
+                this.destroySession()
+                window.localStorage.removeItem('auth_token')
+                window.localStorage.removeItem('auth_user')
+                this.$router.push('/login')
+            })
+            .catch(error => console.log(error))
         },
 
         getNameUser() {

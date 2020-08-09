@@ -110,7 +110,7 @@ export default {
             formData.append('password', this.form_password); 
             formData.append('password_confirmation', this.form_c_password); 
 
-            this.axios.post('http://localhost:8000/api/register', formData)
+            this.axios.post('register', formData)
             .then(response => {
                 this.response = response.data
                 return this.$router.push('/login?registered=true')

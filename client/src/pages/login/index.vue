@@ -155,7 +155,7 @@ export default {
             formData.append('email', this.form_email);
             formData.append('password', this.form_password);  
 
-            this.axios.post('http://localhost:8000/api/login', formData)
+            this.axios.post('login', formData)
             .then(response => {
                 const data = response.data
                 const { auth_token, user } = data
