@@ -6,7 +6,14 @@
             </router-link>
         </div>
 
-        <nav class="navigation">
+        <nav class="navigation d-flex">
+            <router-link 
+                to="/profile" 
+                class="text-capitalize mr-3">
+
+                Perfil
+            </router-link>
+        
             <a 
                 class="pointer" 
                 @click="handleLogout">
