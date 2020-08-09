@@ -1,5 +1,5 @@
 <template>
-    <header class="px-3 d-flex justify-content-between card-bg border-bottom">
+    <header class="px-3 d-flex justify-content-between card-bg border-bottom-r">
         <div class="branding">
             <router-link to="/home" class="text-capitalize">
                 {{ user_name.length ? user_name : 'Messenger' }}
@@ -7,6 +7,13 @@
         </div>
 
         <nav class="navigation d-flex">
+            <router-link 
+                to="/home" 
+                class="text-capitalize mr-3">
+
+                Inicio
+            </router-link>
+
             <router-link 
                 to="/profile" 
                 class="text-capitalize mr-3">

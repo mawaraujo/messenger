@@ -1,2 +1,22 @@
 // --- SASS SCSS ---
 $navbar-height: 3rem;
+$primary-background: #4395F7;
+
+$secondary-light-background: #e2e2e2;
+$secondary-dark-background: #383838;
+
+.primary-bg {
+    background: $primary-background;
+}
+
+.light-bg {
+    .secondary-bg {
+        background: $secondary-light-background;
+    }
+}
+
+.dark-bg {
+    .secondary-bg {
+        background: $secondary-dark-background;
+    }
+}
