@@ -40,7 +40,7 @@ if(isAuthenticated) {
         return {
           ...config,
           headers: {
-            'Authorization': isAuthenticated() ? isAuthenticated() : null,
+            'Authorization': isAuthenticated() ? 'Bearer ' + isAuthenticated() : null,
             'Content-Type': 'application/json'
           }
         }

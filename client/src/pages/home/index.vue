@@ -63,7 +63,7 @@ export default {
     },
 
     mounted() {
-        this.getCurrentUser()
+        // this.getCurrentUser()
     },
 
     methods: {
@@ -77,10 +77,9 @@ export default {
 
         async getCurrentUser() {
             try {
-                console.log('Current-user')
-                // const response = await this.axios.get('http://localhost:8000/api/users') 
-                // const data = response.data
-                // console.log(data)
+                const response = await this.axios.get('http://localhost:8000/api/user') 
+                const data = response.data
+                console.log(data)
             } catch (error) {
                 console.log(error)
             }

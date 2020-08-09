@@ -20,6 +20,8 @@ class UserController extends Controller
     {
         $query = User::orderBy('created_at', 'desc');
 
+        UserCollection::withoutWrapping();
+        
         return $this->sendCollectionResource(
             new UserCollection($query->paginate($request->get('limit', 15))),
             'Usuarios encontrados'
@@ -55,6 +57,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        UserResource::withoutWrapping();
         return $this->sendResponse(new UserResource($user), 'User found');
     }
 

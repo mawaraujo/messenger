@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Hash;
 use Validator;
-use App\Models\User;
 use Auth;
+use App\Models\User;
 use App\Http\Resources\Models\User as UserResource;
 
 class AuthController extends Controller
@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         $user->save();
 
-        return $this->sendResponse('Successfully created user!', []);
+        return $this->sendResponse([], 'Successfully created user!', 200);
     }
 
 
@@ -59,6 +59,19 @@ class AuthController extends Controller
         } else {
             return $this->sendError('The user doesnt exist', 422); 
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return $this->sendResponse([], 'Successfully logged out', 200);
+    }
+
+    public function checkAuth(Request $request) 
+    {
+        $user = $request->user();
+        UserResource::withoutWrapping();
+        return new UserResource($user);
     }
 
 }
