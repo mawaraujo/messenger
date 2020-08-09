@@ -21,7 +21,7 @@
                 message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, labore" />
 
             <BubbleChat
-                from="you"
+                from="jhon"
                 message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, labore" />
         </div>
 
