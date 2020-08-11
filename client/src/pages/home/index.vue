@@ -11,17 +11,24 @@
         </div>
 
         <!-- Chats wrapper -->
-        <div class="chats" slot="chats_wrapper">
+        <div class="chats mt-3" slot="chats_wrapper">
             <CardChat
                 @clicked="handleChat(33)" 
                 name="Jhon Doe"
                 last_message="Lorem ipsum dolor it"
                 last_time="10:45 PM"
             />
+
+            <CardChat
+                @clicked="handleChat(33)" 
+                name="Jhon Doe"
+                last_message="Lorem ipsum dolor it"
+                last_time="10:45 PM"
+            />            
         </div>
 
         <!-- Main chat wrapper -->
-        <div class="container-fluid" slot="content">
+        <div class="container-fluid card-bg" slot="content">
             <div class="row">
                 <div class="col-12 py-3">
                     <Chat 

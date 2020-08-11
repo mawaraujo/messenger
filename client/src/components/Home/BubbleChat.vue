@@ -1,15 +1,14 @@
 <template>
     <div class="bubble_wrapper mt-2 d-flex flex-column">
         <div 
-            v-bind:class="from === 'me' ? 'text-right' : 'text-left'"
+            v-bind:class="from === 'me' ? 'text-right ml-auto' : 'text-left'"
             class="from mb-0 text-capitalize small">
-            <p class="mb-0">{{ from === 'me' ? 'Tú' : from}}</p>
         </div>
 
-        <div class="bubble mt-0 ounded-lg">
+        <div class="bubble mt-0">
             <div 
-                v-bind:class="from === 'me' ? 'primary-bg me text-light' : 'secondary-bg you text-dynamic'"
-                class="chat_output py-2 px-4 rounded-lg small my-auto">
+                v-bind:class="from === 'me' ? 'primary-bg me text-light drop-left' : 'secondary-bg you text-dynamic drop-right'"
+                class="chat_output py-3 px-4 small my-auto">
 
                 {{ message }}
             </div>
@@ -36,13 +35,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $rounded-prop: 30px;
+
     .me {
-        width: 55%;
-        float: right;    
+        width: auto;
+        max-width: 45%;
+        float: right;
     }
 
     .you {
-        width: 55%;
+        width: auto;
+        max-width: 45%;
         float: left;
+    }
+
+    .drop-left {
+        border-top-left-radius: $rounded-prop;
+        border-bottom-left-radius: $rounded-prop;
+        border-top-right-radius: $rounded-prop;
+    }
+
+    .drop-right {
+        border-bottom-right-radius: $rounded-prop;
+        border-bottom-left-radius: $rounded-prop;
+        border-top-right-radius: $rounded-prop;        
     }
 </style>

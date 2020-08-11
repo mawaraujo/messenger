@@ -3,7 +3,7 @@
         <Header />
 
         <div class="wrapper">
-            <div class="left sidebar card-bg py-3">
+            <div class="left sidebar card-bg py-3 border-right-c">
                     <slot class="search_wrapper" name="search_wrapper"></slot>
                     <slot class="chats_wrapper" name="chats_wrapper"></slot>
             </div>
@@ -32,9 +32,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    $height: 4rem;
+
     .content {
         height: 100%;
-        min-height: calc(100vh - 3rem);
+        min-height: calc(100vh - $height);
     }
 
     .wrapper{
@@ -42,13 +44,13 @@ export default {
             float: left;
             max-width: 330px;
             width: 100%;
-            height: calc(100vh - 3rem);
+            height: calc(100vh - 4rem);
         }
 
         .right.content {
             float: left;
             width: calc(100% - 330px);
-            height: calc(100vh - 3rem);
+            height: calc(100vh - $height);
         }
     }
 </style>

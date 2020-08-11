@@ -1,5 +1,5 @@
 <template>
-    <div class="search_bar d-flex px-3 rounded-pill">
+    <div class="search_bar d-flex px-3 py-1 rounded-pill secondary-bg">
         <input 
             type="text" 
             placeholder="Buscar personas o chats"
@@ -33,7 +33,6 @@ export default {
 
 <style lang="scss" scoped>
     .search_bar {
-        border: 1px solid rgb(170, 170, 170);
         width: 100%; 
 
         input {

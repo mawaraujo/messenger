@@ -4,9 +4,15 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from '@/store/index'
 import Router from '@/routes/index'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+library.add(faCog)
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // Axios config
 if(Router.isAuthenticated) {

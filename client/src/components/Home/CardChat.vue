@@ -1,12 +1,19 @@
 <template>
     <div 
         @click="$emit('clicked', true)"
-        class="pointer card_chat border-bottoms d-flex justify-content-between py-3 px-3 mt-3">
+        class="pointer card_chat secondary-bg-hover d-flex justify-content-between py-3 px-3">
 
         <div class="content_ch d-flex my-auto">
             <div class="left my-auto rounded-circle mr-2">
                 <img 
-                    :src="image ? image : '../../static/default_people.png'" 
+                    v-if="image"
+                    :src="image" 
+                    class="img-fluid my-auto"
+                    alt="Perfil photo">
+                
+                <img 
+                    v-else
+                    src="@/static/default_people.png" 
                     class="img-fluid my-auto"
                     alt="Perfil photo">
             </div>
@@ -56,9 +63,9 @@ export default {
 <style lang="scss" scoped>
     .card_chat {
         .left {
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
             overflow: hidden;
 
             img {
@@ -67,13 +74,5 @@ export default {
                 object-fit: cover;
             }
         }
-
-        &:hover {
-            background: rgb(240, 240, 240);
-        }
-    }
-
-    .border-bottoms {
-        border-bottom: 1px solid rgb(240, 240, 240);
     }
 </style>

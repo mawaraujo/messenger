@@ -1,9 +1,15 @@
 // --- SASS SCSS ---
-$navbar-height: 3rem;
+$navbar-height: 4.3rem;
 $primary-background: #4395F7;
 
-$secondary-light-background: #e2e2e2;
+$secondary-light-background: #F1F2F7;
 $secondary-dark-background: #383838;
+
+$border-app: #F3F5F7;
+$border-dark-app: #2D2F33;
+
+$input-chat-light-background: #FAF9FC;
+$input-chat-dark-background: #313237;
 
 .primary-bg {
     background: $primary-background;
@@ -13,10 +19,50 @@ $secondary-dark-background: #383838;
     .secondary-bg {
         background: $secondary-light-background;
     }
+
+    .secondary-bg-hover:hover {
+        background: $secondary-light-background;
+    }
+
+    .border-bottom-c {
+        border-bottom: 1px solid $border-app;
+    }
+
+    .border-right-c {
+        border-right: 1px solid $border-app;
+    }
+
+    .border-c {
+        border: 1px solid $border-app; 
+    }
+
+    .chat-input-bg {
+        background: $input-chat-light-background
+    }
 }
 
 .dark-bg {
     .secondary-bg {
         background: $secondary-dark-background;
+    }
+
+    .secondary-bg-hover:hover {
+        background: $secondary-dark-background;
+    }
+
+    .border-bottom-c {
+        border-bottom: 1px solid $border-dark-app;
+    }
+
+    .border-right-c {
+        border-right: 1px solid $border-dark-app;
+    }
+
+    .border-c {
+        border: 1px solid $border-dark-app;
+    }
+
+    .chat-input-bg {
+        background: $input-chat-dark-background;
     }
 }

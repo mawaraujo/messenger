@@ -1,8 +1,13 @@
 <template>
-    <header class="px-3 d-flex justify-content-between card-bg border-bottom-r">
+    <header class="px-3 d-flex justify-content-between card-bg border-bottom-c">
         <div class="branding">
             <router-link to="/home" class="text-capitalize">
-                {{ user_name.length ? user_name : 'Messenger' }}
+                <div class="img-wrapper d-flex align-items-center">
+                    <img 
+                        src="@/static/brand.png" 
+                        width="100%" 
+                        alt="Brand">
+                </div>
             </router-link>
         </div>
 
@@ -14,18 +19,22 @@
                 Inicio
             </router-link>
 
-            <router-link 
-                to="/profile" 
-                class="text-capitalize mr-3">
-
-                Perfil
-            </router-link>
-        
             <a 
-                class="pointer" 
+                class="pointer mr-3" 
                 @click="handleLogout">
                 Cerrar sesión
             </a>
+
+            <router-link 
+                to="/profile" 
+                class="text-capitalize">
+
+                <div class="profile-image">
+                    <img 
+                        src="@/static/default_people.png" 
+                        alt="Profile image">
+                </div>
+            </router-link>
         </nav>
     </header>
 </template>
@@ -79,7 +88,31 @@ export default {
 
 <style lang="scss" scoped>
     header {
-        height: 3rem;
-        line-height: 3rem;
+        height: 4rem;
+        line-height: 4rem;
+
+        .img-wrapper{
+            width: 40px;
+            height: 100%;
+
+            img {
+                margin: auto 0;
+                width: 100%;
+            }
+        }
+
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-top: calc(2rem - 50%);
+
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+            }
+        }
     }
 </style>
