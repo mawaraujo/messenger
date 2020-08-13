@@ -4,7 +4,7 @@
             <div class="left my-auto d-flex">
                 <div class="content-title text-capitalize">
                     <h1 class="h4 text-dynamic my-auto">{{ contact_name }}</h1>
-                    <p class="small">{{contact_chat_status}}</p>
+                    <p class="small my-auto">{{contact_chat_status}}</p>
                 </div>
             </div>
 
@@ -112,7 +112,7 @@ export default {
                 .then(response => {
                     this.message_field = ''
                     this.getMessages()
-                    return response
+                    this.$emit('sending', response)
                 })
                 .catch(error => console.log(error))
         }

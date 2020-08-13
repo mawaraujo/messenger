@@ -4,7 +4,7 @@
 
         <!-- Search wrapper -->
         <div class="search px-3" slot="search_wrapper">
-            <SearchBar 
+            <SearchBar  
                 @search="handleSearch"
                 @keyup.enter="handleSearch"
                 @output="search_text = $event" />
@@ -17,8 +17,8 @@
                     :key="conversation.id"
                     @clicked="handleChat(conversation.contact)" 
                     :name="conversation.contact.name"
-                    last_message="Lorem ipsum dolor it"
-                    last_time="10:45 PM"
+                    :last_message="conversation.last_message"
+                    :last_time="conversation.last_time.split(' ')[1]"
                 />
             </template>
         </div>
@@ -30,7 +30,8 @@
                     <Chat 
                         :contact_id="selected_chat.id"
                         :contact_name="selected_chat.name"
-                        :contact_chat_status="selected_chat.chat_status" />
+                        :contact_chat_status="selected_chat.chat_status" 
+                        @sending="getConversations()" />
                 </div>
 
                 <!-- Convertir en un componente -->
