@@ -26,11 +26,17 @@
         <!-- Main chat wrapper -->
         <div class="container-fluid card-bg" slot="content">
             <div class="row">
-                <div class="col-12 py-3">
+                <div class="col-12 py-3" v-if="selected_chat.id !== ''">
                     <Chat 
                         :contact_id="selected_chat.id"
-                        :contact_name="selected_chat.name" />
+                        :contact_name="selected_chat.id" />
                 </div>
+
+                <!-- Convertir en un componente -->
+                <div class="col-12 py-3 empty chat" v-else>
+                    <p>Selecciona un chat para continuar</p>
+                </div>
+                <!-- Convertir en un componente -->
             </div>
         </div>
     </AppLayout>
@@ -56,8 +62,8 @@ export default {
         return {
             search_text: '',
             selected_chat: {
-                id: 2,
-                name: 'Jhon Doe'
+                id: '',
+                name: ''
             },
             conversations: []
         }

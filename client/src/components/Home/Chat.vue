@@ -99,7 +99,7 @@ export default {
 
         async submitMessage() {              
             const params = {
-                to_id: 2,
+                to_id: this.contact_id,
                 content: this.message_field
             }
             
