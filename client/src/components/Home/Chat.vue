@@ -3,7 +3,7 @@
         <div class="chat_header d-flex justify-content-between py-3">
             <div class="left my-auto d-flex">
                 <div class="content-title">
-                    <h1 class="h4 text-dynamic my-auto">{{ user_name }}</h1>
+                    <h1 class="h4 text-dynamic my-auto">{{ contact_name }}</h1>
                 </div>
             </div>
 
@@ -57,19 +57,13 @@ export default {
     },
 
     props: {
-        user_id: {
+        contact_name: {
+            required: true
+        },
+
+        contact_id: {
             required: true,
             type: Number
-        },
-
-        user_name: {
-            required: true,
-            type: String
-        },
-
-        user_chat_status: {
-            required: true,
-            type: String
         }
     },
 
@@ -81,7 +75,7 @@ export default {
         return {
             message_field: '',
             messages: [],
-            me: {}
+            me: {},
         }
     },
 
@@ -90,10 +84,16 @@ export default {
         await this.getMessages()
     },
 
+    watch: {
+        contact_id: async function() {
+            await this.getMessages()
+        }
+    },
+
     methods: {
         async getMessages() {
-            this.axios.get('messages')
-                .then(response => this.messages = response.data)
+            this.axios.get(`messages?to_id=${this.contact_id}`)
+                .then(response => this.messages = response.data.data)
                 .catch(error => console.log(error))
         },
 

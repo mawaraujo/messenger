@@ -12,19 +12,15 @@
 
         <!-- Chats wrapper -->
         <div class="chats mt-3" slot="chats_wrapper">
-            <CardChat
-                @clicked="handleChat(33)" 
-                name="Jhon Doe"
-                last_message="Lorem ipsum dolor it"
-                last_time="10:45 PM"
-            />
-
-            <CardChat
-                @clicked="handleChat(33)" 
-                name="Jhon Doe"
-                last_message="Lorem ipsum dolor it"
-                last_time="10:45 PM"
-            />            
+            <template v-for="conversation in conversations">
+                <CardChat
+                    :key="conversation.id"
+                    @clicked="handleChat(conversation.contact_id, conversation.contact_id)" 
+                    :name="conversation.contact_id"
+                    last_message="Lorem ipsum dolor it"
+                    last_time="10:45 PM"
+                />
+            </template>
         </div>
 
         <!-- Main chat wrapper -->
@@ -32,9 +28,8 @@
             <div class="row">
                 <div class="col-12 py-3">
                     <Chat 
-                        :user_id="2"
-                        user_name="Jhon Doe"
-                        user_chat_status="Aburrido!" />
+                        :contact_id="selected_chat.id"
+                        :contact_name="selected_chat.name" />
                 </div>
             </div>
         </div>
@@ -59,7 +54,12 @@ export default {
 
     data() {
         return {
-            search_text: ''
+            search_text: '',
+            selected_chat: {
+                id: 2,
+                name: 'Jhon Doe'
+            },
+            conversations: []
         }
     },
 
@@ -69,8 +69,9 @@ export default {
         }
     },
 
-    mounted() {
+    async mounted() {
         // this.getCurrentUser()
+        await this.getConversations()
     },
 
     methods: {
@@ -78,8 +79,9 @@ export default {
             console.log(this.search_text + ' desde index.vue')
         },
 
-        handleChat(id) {
-            console.log(id)
+        handleChat(id, name) {
+            this.selected_chat.id = id
+            this.selected_chat.name = name
         },
 
         async getCurrentUser() {
@@ -87,6 +89,16 @@ export default {
                 const response = await this.axios.get('user') 
                 const data = response.data
                 console.log(data)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
+        async getConversations() {
+            try {
+                const response = await this.axios.get('conversations')
+                const store = response.data
+                this.conversations = store.data
             } catch (error) {
                 console.log(error)
             }

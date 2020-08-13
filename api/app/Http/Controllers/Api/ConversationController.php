@@ -18,7 +18,8 @@ class ConversationController extends Controller
      */
     public function index(Conversation $conversation, Request $request)
     {
-        return $conversation->where('user_id', $request->user()->id)->get();
+        $conversations = $conversation->where('user_id', $request->user()->id);
+        return $this->sendCollectionResource(new ConversationCollection($conversations->get()), 'Conversaciones encontradas');
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Resources\Models;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+use App\Http\Resources\Models\User as UserResource;
+
 class Conversation extends JsonResource
 {
     /**
@@ -15,7 +17,11 @@ class Conversation extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'contact_id' => $this->contact_id,
+            'created_at' => $this->created_at,
+            'contact' => new UserResource($this->whenLoaded('user'))
         ];
     }
 }

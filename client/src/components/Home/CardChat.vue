@@ -38,8 +38,7 @@ export default {
 
     props: {
         name: {
-            required: true,
-            type: String
+            required: true
         },
 
         image: {

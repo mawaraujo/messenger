@@ -17,10 +17,19 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Message $message, Request $request)
+    public function index(Request $request)
     {
-        return $message->all();
-    }   
+        MessageCollection::withoutWrapping();
+        
+        $messages = Message::where(function($query) use ($request) {
+                $query->where('from_id', $request->user()->id)->where('to_id', $request->to_id);
+            })
+            ->orWhere(function($query) use ($request) {
+                $query->where('from_id', $request->to_id)->where('to_id', $request->user()->id);
+        })->get();
+
+        return $this->sendCollectionResource(new MessageCollection($messages), 'Mensajes encontrados');
+    }
 
     /**
      * Show the form for creating a new resource.
