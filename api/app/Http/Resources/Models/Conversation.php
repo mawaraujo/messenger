@@ -19,9 +19,12 @@ class Conversation extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'contact_id' => $this->contact_id,
-            'created_at' => $this->created_at,
-            'contact' => new UserResource($this->whenLoaded('user'))
+            'contact' => new UserResource($this->whenLoaded('contact')),
+            'listen_notifications' => $this->listen_notifications,
+            'last_message' => $this->last_message,
+            'last_time' => $this->last_time,
+            'has_blocked' => $this->has_blocked,
+            'created_at' => $this->created_at
         ];
     }
 }

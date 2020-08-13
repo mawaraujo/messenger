@@ -14,18 +14,21 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name' => 'admin',
+            'chat_status' => 'En casa',
             'email' => 'admin@support.com',
             'password' => bcrypt('support')
         ]);
 
         User::create([
             'name' => 'tester',
+            'chat_status' => 'Trabajando',
             'email' => 'tester@support.com',
             'password' => bcrypt('support')
         ]);
 
         User::create([
             'name' => 'Milton',
+            'chat_status' => 'Jugando videosjuegos',
             'email' => 'milton@support.com',
             'password' => bcrypt('support')
         ]);

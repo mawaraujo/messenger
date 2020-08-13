@@ -18,7 +18,7 @@ class ConversationController extends Controller
      */
     public function index(Conversation $conversation, Request $request)
     {
-        $conversations = $conversation->where('user_id', $request->user()->id);
+        $conversations = $conversation->where('user_id', $request->user()->id)->with('contact');
         return $this->sendCollectionResource(new ConversationCollection($conversations->get()), 'Conversaciones encontradas');
     }
 
@@ -51,7 +51,8 @@ class ConversationController extends Controller
      */
     public function show(Conversation $conversation)
     {
-        return $this->sendResponse(new ConversationResource($conversation));
+        //  Falta añadir contacto
+        return $this->sendResponse(new ConversationResource($conversation), 'Conversacion encontrada');
     }
 
     /**

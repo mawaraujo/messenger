@@ -15,8 +15,8 @@
             <template v-for="conversation in conversations">
                 <CardChat
                     :key="conversation.id"
-                    @clicked="handleChat(conversation.contact_id, conversation.contact_id)" 
-                    :name="conversation.contact_id"
+                    @clicked="handleChat(conversation.contact)" 
+                    :name="conversation.contact.name"
                     last_message="Lorem ipsum dolor it"
                     last_time="10:45 PM"
                 />
@@ -29,7 +29,8 @@
                 <div class="col-12 py-3" v-if="selected_chat.id !== ''">
                     <Chat 
                         :contact_id="selected_chat.id"
-                        :contact_name="selected_chat.id" />
+                        :contact_name="selected_chat.name"
+                        :contact_chat_status="selected_chat.chat_status" />
                 </div>
 
                 <!-- Convertir en un componente -->
@@ -63,7 +64,8 @@ export default {
             search_text: '',
             selected_chat: {
                 id: '',
-                name: ''
+                name: '',
+                chat_status: ''
             },
             conversations: []
         }
@@ -85,9 +87,10 @@ export default {
             console.log(this.search_text + ' desde index.vue')
         },
 
-        handleChat(id, name) {
-            this.selected_chat.id = id
-            this.selected_chat.name = name
+        handleChat(contact) {
+            this.selected_chat.id = contact.id
+            this.selected_chat.name = contact.name
+            this.selected_chat.chat_status = contact.chat_status
         },
 
         async getCurrentUser() {

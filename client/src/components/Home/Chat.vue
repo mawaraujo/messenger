@@ -2,8 +2,9 @@
     <div class="chat_component" id="chat">
         <div class="chat_header d-flex justify-content-between py-3">
             <div class="left my-auto d-flex">
-                <div class="content-title">
+                <div class="content-title text-capitalize">
                     <h1 class="h4 text-dynamic my-auto">{{ contact_name }}</h1>
+                    <p class="small">{{contact_chat_status}}</p>
                 </div>
             </div>
 
@@ -23,8 +24,7 @@
             </div>
         </div>
 
-        <div 
-            class="card_input d-flex align-items-center rounded-lg">
+        <div class="card_input d-flex align-items-center rounded-lg py-2">
             <div class="textarea border-c my-auto shadow-sm rounded-lg mr-3">
                 <textarea 
                     @keyup.enter="submitMessage"
@@ -64,6 +64,11 @@ export default {
         contact_id: {
             required: true,
             type: Number
+        },
+
+        contact_chat_status: {
+            required: true,
+            type: String
         }
     },
 
@@ -128,7 +133,7 @@ export default {
 
         .card_body {
             width: 100%;
-            max-height: 300px;
+            max-height: calc(100vh - 16.5rem);
             height: 100%;
             overflow-y: scroll;
             
@@ -159,9 +164,6 @@ export default {
         }
 
         .card_input {
-            position: absolute;
-            bottom: 0;
-            left: 0;
             width: 100%;
 
             .textarea {
