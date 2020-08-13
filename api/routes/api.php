@@ -25,6 +25,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('logout', 'AuthController@logout')->name('logout');
 
         Route::apiResource('conversations', 'ConversationController');
+        Route::apiResource('messages', 'MessageController');
         Route::apiResource('users', 'UserController');
     });
 

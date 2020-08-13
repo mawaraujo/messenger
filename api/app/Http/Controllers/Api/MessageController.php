@@ -5,21 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\BaseController as Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Conversation;
-use App\Http\Resources\Models\Conversation as ConversationResource;
-use App\Http\Resources\Collections\ConversationCollection;
+use App\Models\Message;
+use App\Http\Resources\Models\Message as MessageResource;
+use App\Http\Resources\Collections\MessageCollection;
+use Validator;
 
-class ConversationController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Conversation $conversation, Request $request)
+    public function index(Message $message, Request $request)
     {
-        return $conversation->where('user_id', $request->user()->id)->get();
-    }
+        return $message->all();
+    }   
 
     /**
      * Show the form for creating a new resource.
@@ -39,7 +40,22 @@ class ConversationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string',
+            'to_id' => 'required|integer'
+        ]);
+
+        if($validator->fails()) {
+            return $this->sendError($validator->errors()->all(), 422);
+        }
+
+        $message = new Message();
+        $message->from_id = $request->user()->id;
+        $message->to_id = $request->to_id;
+        $message->content = $request->content;
+        $message->save();
+
+        return $this->sendResponse(new MessageResource($message), 'Mensaje enviado con éxito', 200);
     }
 
     /**
@@ -48,9 +64,9 @@ class ConversationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Conversation $conversation)
+    public function show($id)
     {
-        return $this->sendResponse(new ConversationResource($conversation));
+        //
     }
 
     /**

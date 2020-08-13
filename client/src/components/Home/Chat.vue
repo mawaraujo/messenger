@@ -15,33 +15,39 @@
             </div>
         </div>
         
-        <div class="card_body py-3 px-3 d-flex flex-column">
+        <div class="card_body py-3 px-4 d-flex flex-column">
             <div v-for="message in messages" :key="message.id">
                 <BubbleChat
-                    :from="message.from"
-                    :message="message.message" />
+                    :from="message.from_id === me.id ? 'me' : 'other'"
+                    :message="message.content" />
             </div>
         </div>
 
         <div 
-            class="card_input card-bg shadow-sm d-flex rounded-pill px-3">
-            <textarea 
-                @keyup.enter="submitMessage"
-                v-model="message_field"
-                class="input_field regular-font my-auto">
-            </textarea>
+            class="card_input d-flex align-items-center rounded-lg">
+            <div class="textarea border-c my-auto shadow-sm rounded-lg mr-3">
+                <textarea 
+                    @keyup.enter="submitMessage"
+                    v-model="message_field"
+                    placeholder="Escribe tu mensaje aquí"
+                    class="input_field regular-font pt-3 px-3">
+                </textarea>
+            </div>
 
-            <button
-                @click="submitMessage" 
-                class="btn btn-light-primary rounded-pill my-auto px-4">
-                Enviar
-            </button>
+            <div class="submit my-auto">
+                <button
+                    @click="submitMessage" 
+                    class="btn btn-light-primary rounded-pill my-auto px-4">
+                    Enviar
+                </button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import BubbleChat from '@/components/Home/BubbleChat.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'Chat',
@@ -67,38 +73,43 @@ export default {
         }
     },
 
+    computed: {
+        ...mapGetters(['getUser'])
+    },
+
     data() {
         return {
             message_field: '',
-            messages: [
-                {
-                    id: 0,
-                    message: 'Lorem ipsum dolor it',
-                    from: 'me'
-                },
-                {
-                    id: 1,
-                    message: 'José Francisco de San Martín y Matorras​ ​ fue un militar y político rioplatense y uno de los libertadores de Argentina, Chile y Perú. En abril de 1784, cuando tenía seis años, llegó con su familia a la ciudad española de Cádiz ―previa estadía en Buenos Aires― y se radicó luego en la ciudad de Málaga',
-                    from: 'you'
-                },
-            ]
+            messages: [],
+            me: {}
         }
     },
 
+    async mounted() {
+        await this.$nextTick(() => this.me.id = this.getUser.id)
+        await this.getMessages()
+    },
+
     methods: {
-        async submitMessage() {
-            let chat = document.getElementById('chat-wrapper')
+        async getMessages() {
+            this.axios.get('messages')
+                .then(response => this.messages = response.data)
+                .catch(error => console.log(error))
+        },
 
-            console.log(this.message_field)
+        async submitMessage() {              
+            const params = {
+                to_id: 2,
+                content: this.message_field
+            }
             
-            this.messages.push({
-                id: Math.random().toString(36).substring(2, 15) + Math.random(),
-                message: this.message_field,
-                from: 'me'
-            })
-
-            window.scrollTo(0, chat.offsetHeight);
-            this.message_field = ''
+            this.axios.post('messages', params)   
+                .then(response => {
+                    this.message_field = ''
+                    this.getMessages()
+                    return response
+                })
+                .catch(error => console.log(error))
         }
     },
 }
@@ -117,27 +128,84 @@ export default {
 
         .card_body {
             width: 100%;
-            max-height: 430px;
+            max-height: 300px;
             height: 100%;
             overflow-y: scroll;
+            
+            /* Tamaño del scroll */
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            /* Estilos barra (thumb) de scroll */
+            &::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb:active {
+                background-color: #999999;
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background: #b3b3b3;
+            }
+
+            /* Estilos track de scroll */
+            &::-webkit-scrollbar-track {
+                background: #F1F2F7;
+                border-radius: 4px;
+            }           
         }
 
         .card_input {
-            border: 1px solid rgb(240, 240, 240);
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
 
-            textarea {
-                border: 0;
-                background: none;
-                outline: none;
+            .textarea {
                 width: 100%;
-                max-width: 100%;
-                resize: none;
-                height: 60px;
-                line-height: 60px;
+
+                textarea {
+                    border: 0;
+                    background: none;
+                    outline: none;
+                    width: 100%;
+                    resize: none;
+
+                    /* Tamaño del scroll */
+                    &::-webkit-scrollbar {
+                        width: 10px;
+                        height: 100%;
+                    }
+
+                    /* Estilos barra (thumb) de scroll */
+                    &::-webkit-scrollbar-thumb {
+                        background: #ccc;
+                        border-radius: 4px;
+                    }
+
+                    &::-webkit-scrollbar-thumb:active {
+                        background-color: #999999;
+                    }
+
+                    &::-webkit-scrollbar-thumb:hover {
+                        background: #b3b3b3;
+                    }
+
+                    /* Estilos track de scroll */
+                    &::-webkit-scrollbar-track {
+                        background: #F1F2F7;
+                        border-radius: 4px;
+                    }   
+                }
+            }
+
+            .submit {
+                button {
+                    margin: auto 0;
+                }
             }
         }
     }

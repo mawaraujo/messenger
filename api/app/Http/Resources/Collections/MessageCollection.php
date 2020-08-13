@@ -4,10 +4,9 @@ namespace App\Http\Resources\Collections;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ConversationCollection extends ResourceCollection
+class MessageCollection extends ResourceCollection
 {
-
-    public $collects = 'App\Http\Resources\Models\Conversation';
+    public $collects = 'App\Http\Resources\Models\Message';
 
     /**
      * Transform the resource collection into an array.
@@ -17,6 +16,6 @@ class ConversationCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return $this->collection;
     }
 }
