@@ -1,5 +1,5 @@
 <template>
-    <div class="chat_component" id="chat" ref="chat">
+    <div class="chat_component" id="chat">
         <div class="chat_header d-flex justify-content-between py-3">
             <div class="left my-auto d-flex">
                 <div class="content-title text-capitalize">
@@ -16,7 +16,7 @@
             </div>
         </div>
         
-        <div class="card_body py-3 px-4 d-flex flex-column">
+        <div ref="chat_body" class="card_body py-3 px-4 d-flex flex-column">
             <div v-for="message in messages" :key="message.id">
                 <BubbleChat
                     :from="message.from_id === me.id ? 'me' : 'other'"
@@ -141,7 +141,7 @@ export default {
             this.axios.post('messages', params)   
                 .then(response => {
                     this.message_field = ''
-                    this.$refs.chat.scrollTo(0, this.$refs.chat.scrollHeight);
+                    this.$refs.chat_body.scrollTop = this.$refs.chat_body.scrollHeight * 10
                     this.$emit('sending', response)
                 })
                 .catch(error => console.log(error))
@@ -162,6 +162,7 @@ export default {
         }
 
         .card_body {
+            scroll-behavior: smooth;   
             width: 100%;
             max-height: calc(100vh - 16.5rem);
             height: 100%;
