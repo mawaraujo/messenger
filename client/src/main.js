@@ -5,10 +5,10 @@ import VueAxios from 'vue-axios'
 import store from '@/store/index'
 import Router from '@/routes/index'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCog } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faCog)
+library.add(faCog, faArrowLeft)
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
@@ -20,7 +20,7 @@ if(Router.isAuthenticated) {
       config => {
         return {
           ...config,
-          baseURL: 'http://localhost:8000/api/',
+          baseURL: process.env.VUE_APP_URL,
           headers: {
             'Authorization': Router.isAuthenticated() ? 'Bearer ' + Router.isAuthenticated() : null,
             'Content-Type': 'application/json'

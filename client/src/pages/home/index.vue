@@ -26,7 +26,7 @@
         <!-- Main chat wrapper -->
         <div class="container-fluid card-bg" slot="content">
             <div class="row">
-                <div class="col-12 py-3" v-if="selected_chat.id !== ''">
+                <div class="col-12 py-3" v-if="selected_chat.name.length > 0">
                     <Chat 
                         :contact_id="selected_chat.id"
                         :contact_name="selected_chat.name"
@@ -35,8 +35,8 @@
                 </div>
 
                 <!-- Convertir en un componente -->
-                <div class="col-12 py-3 empty chat" v-else>
-                    <p>Selecciona un chat para continuar</p>
+                <div class="col-12" v-else>
+                   <EmptyChat />
                 </div>
                 <!-- Convertir en un componente -->
             </div>
@@ -49,6 +49,7 @@
 import AppLayout from '@/layouts/AppLayout.vue'
 import SearchBar from '@/components/Home/SearchBar.vue'
 import CardChat from '@/components/Home/CardChat.vue'
+import EmptyChat from '@/components/Home/EmptyChat.vue'
 import Chat from '@/components/Home/Chat.vue'
 
 export default {
@@ -57,6 +58,7 @@ export default {
        AppLayout,
        SearchBar,
        CardChat,
+       EmptyChat,
        Chat
     },
 

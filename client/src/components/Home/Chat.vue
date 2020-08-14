@@ -1,5 +1,5 @@
 <template>
-    <div class="chat_component" id="chat">
+    <div class="chat_component" id="chat" ref="chat">
         <div class="chat_header d-flex justify-content-between py-3">
             <div class="left my-auto d-flex">
                 <div class="content-title text-capitalize">
@@ -48,6 +48,7 @@
 <script>
 import BubbleChat from '@/components/Home/BubbleChat.vue'
 import { mapGetters } from 'vuex'
+import Pusher from 'pusher-js';
 
 export default {
     name: 'Chat',
@@ -73,7 +74,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['getUser'])
+        ...mapGetters(['getUser', 'getToken'])
     },
 
     data() {
@@ -81,11 +82,16 @@ export default {
             message_field: '',
             messages: [],
             me: {},
+            is_online: true
         }
     },
 
     async mounted() {
+        if(navigator.onLine) this.is_online = true
+        else this.is_online = false
+        
         await this.$nextTick(() => this.me.id = this.getUser.id)
+        await this.initialize()
         await this.getMessages()
     },
 
@@ -96,10 +102,34 @@ export default {
     },
 
     methods: {
+        initialize() {
+            const pusher = new Pusher(process.env.VUE_APP_PUSHER_KEY, {
+                authEndpoint: `http://localhost:8000/broadcasting/auth`,
+                cluster: process.env.VUE_APP_PUSHER_CLUSTER,
+                enableStats: false,
+                auth: {
+                    headers: {
+                        Authorization: 'Bearer ' + this.getToken
+                    },
+                },
+                encrypted: true
+            })
+
+            const messageChannel = pusher.subscribe('private-messages');
+
+            messageChannel.bind('new.message', data => {
+                this.messages.push(data.message)
+            })
+
+            pusher.connection.bind('error', err => {
+                if(err.error.data.code === 4004) return console.log(err.error)
+            })
+        },
+
         async getMessages() {
             this.axios.get(`messages?to_id=${this.contact_id}`)
                 .then(response => this.messages = response.data.data)
-                .catch(error => console.log(error))
+                .catch(error => console.log(error)) 
         },
 
         async submitMessage() {              
@@ -111,7 +141,7 @@ export default {
             this.axios.post('messages', params)   
                 .then(response => {
                     this.message_field = ''
-                    this.getMessages()
+                    this.$refs.chat.scrollTo(0, this.$refs.chat.scrollHeight);
                     this.$emit('sending', response)
                 })
                 .catch(error => console.log(error))
