@@ -3,7 +3,7 @@
         @output_search="search_text = $event">
 
         <!-- Search wrapper -->
-        <div class="search px-3" slot="search_wrapper">
+        <div class="search px-3" slot="search_wrapper" v-if="conversations.length">
             <SearchBar  
                 @search="handleSearch"
                 @keyup.enter="handleSearch"
@@ -11,16 +11,24 @@
         </div>
 
         <!-- Chats wrapper -->
-        <div class="chats mt-3" slot="chats_wrapper">
+        <div class="chats mt-3" slot="chats_wrapper" v-if="conversations.length">
             <template v-for="conversation in conversations">
                 <CardChat
                     :key="conversation.id"
                     @clicked="handleChat(conversation.contact)" 
                     :name="conversation.contact.name"
                     :last_message="conversation.last_message"
-                    :last_time="conversation.last_time.split(' ')[1]"
+                    :last_time="conversation.last_time"
                 />
             </template>
+        </div>
+
+        <div class="chats my-5 text-center" slot="chats_wrapper" v-else>
+            <p>Sin conversaciones activas</p>
+
+            <button class="btn btn-light-primary rounded-pill px-4">
+                <small>Añade una conversación</small>
+            </button>
         </div>
 
         <!-- Main chat wrapper -->

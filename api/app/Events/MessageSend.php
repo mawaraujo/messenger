@@ -33,7 +33,7 @@ class MessageSend implements shouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('messages');
+        return new PrivateChannel('users.' . $this->message->to_id);
     }
 
     public function broadcastAs()

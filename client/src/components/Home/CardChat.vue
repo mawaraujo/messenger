@@ -27,7 +27,7 @@
         </div>
 
         <div class="hour my-auto">
-            <p class="small my-auto">{{ last_time }}</p>
+            <p class="small my-auto">{{ last_time | moment("ddd, hA") }}</p>
         </div>
     </div>
 </template>

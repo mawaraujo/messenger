@@ -1,5 +1,5 @@
 <template>
-    <div class="search_bar d-flex px-3 py-1 rounded-pill secondary-bg">
+    <div class="search_bar d-flex px-3 py-2 rounded-pill secondary-bg">
         <input 
             type="text" 
             placeholder="Buscar personas o chats"
@@ -7,9 +7,9 @@
             @change="handleSearch">
 
         <span 
-            class="button pointer" 
+            class="button pointer small" 
             @click="$emit('search', true)">
-            O
+            <font-awesome-icon icon="search" />
         </span>
     </div>
 </template>

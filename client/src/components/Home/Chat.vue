@@ -81,7 +81,7 @@ export default {
         return {
             message_field: '',
             messages: [],
-            me: {},
+            me: {}, 
             is_online: true
         }
     },
@@ -89,7 +89,7 @@ export default {
     async mounted() {
         if(navigator.onLine) this.is_online = true
         else this.is_online = false
-        
+        this.handleScrollToBottom()
         await this.$nextTick(() => this.me.id = this.getUser.id)
         await this.initialize()
         await this.getMessages()
@@ -99,6 +99,10 @@ export default {
         contact_id: async function() {
             await this.getMessages()
         }
+    },
+
+    updated() {
+        this.handleScrollToBottom()
     },
 
     methods: {
@@ -115,14 +119,11 @@ export default {
                 encrypted: true
             })
 
-            const messageChannel = pusher.subscribe('private-messages');
+            const messageChannel = pusher.subscribe(`private-users.${this.me.id}`);
 
             messageChannel.bind('new.message', data => {
-                this.messages.push(data.message)
-            })
-
-            pusher.connection.bind('error', err => {
-                if(err.error.data.code === 4004) return console.log(err.error)
+                this.addMessage(data.message)
+                this.handleEmitSending(data.message)
             })
         },
 
@@ -141,10 +142,28 @@ export default {
             this.axios.post('messages', params)   
                 .then(response => {
                     this.message_field = ''
-                    this.$refs.chat_body.scrollTop = this.$refs.chat_body.scrollHeight * 10
-                    this.$emit('sending', response)
+                    this.addMessage(response.data.data)
+                    this.handleEmitSending(response.data.data)
+                    this.handleScrollToBottom()
+                    
                 })
                 .catch(error => console.log(error))
+        },
+
+        handleScrollToBottom() {
+            this.$refs.chat_body.scrollTop = this.$refs.chat_body.scrollHeight * 100
+        },
+
+        handleEmitSending(data) {
+            this.$emit('sending', data)
+        },
+
+        addMessage(message) {
+            // Si la conversación seleccionada coincide con quien nos envio el mensaje
+            // O si es un mensaje que nosotros enviamos al contacto
+            if(this.contact_id === message.from_id || this.contact_id === message.to_id) {
+                this.messages.push(message)
+            }
         }
     },
 }
