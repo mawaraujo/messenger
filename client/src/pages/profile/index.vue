@@ -3,9 +3,9 @@
         <Header />
 
         <section class="container d-flex align-items-center">
-            <div class="row shadow-sm py-5 card-bg">
+            <div class="row shadow py-5 card-bg d-flex flex-column">
 
-                <div class="col-12 mx-auto profile-data text-center my-4" v-if="set_change === 0">
+                <div class="col-md-4 mx-auto profile-data text-center my-4" v-if="set_change === 0">
                     <div class="profile_image rounded-circle mx-auto mb-3">
                         <img 
                             src="@/static/default_people.png" 
@@ -13,7 +13,7 @@
                     </div>
 
                     <h1 class="text-dynamic text-capitalize my-auto">{{user.name}}</h1>
-                    <p class="h6 my-auto">{{user.chat_status}}</p>
+                    <div>{{user.chat_status}}</div>
                 </div>
 
                 <div class="col-md-6 mx-auto px-5 d-flex justify-content-center align-items-center">
@@ -88,6 +88,15 @@ export default {
                 this.is_error = true
                 this.error = error
             })
+        },
+
+        handleStatus() {
+            this.$refs.input_status.blur()
+            console.log(this.user.chat_status)
+        },
+
+        selectEmoji(emoji) {
+            console.log(emoji)
         }
     },
 }
@@ -114,5 +123,11 @@ export default {
         .flex-md-reverse {
             flex-direction: column-reverse;
         }
+    }
+
+    .w-custom {
+        margin: 0 auto;
+        max-width: 300px;
+        width: 100%;
     }
 </style>
