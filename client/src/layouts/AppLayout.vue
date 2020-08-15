@@ -42,14 +42,14 @@ export default {
     .wrapper{
         .left.sidebar {
             float: left;
-            max-width: 330px;
+            max-width: 340px;
             width: 100%;
             height: calc(100vh - 4rem);
         }
 
         .right.content {
             float: left;
-            width: calc(100% - 330px);
+            width: calc(100% - 340px);
             height: calc(100vh - $height);
         }
     }

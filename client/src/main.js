@@ -4,16 +4,20 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from '@/store/index'
 import Router from '@/routes/index'
-import VueMoment from 'vue-moment'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCog, faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+//Custom plugins
+import FormatNow from '@/plugins/format_now'
+import Truncate from '@/plugins/truncate'
+
 library.add(faCog, faArrowLeft, faSearch)
 
 Vue.config.productionTip = false
+Vue.use(FormatNow)
+Vue.use(Truncate)
 Vue.use(VueAxios, axios)
-Vue.use(VueMoment);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 // Axios config
 if(Router.isAuthenticated) {

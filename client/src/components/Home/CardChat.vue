@@ -21,13 +21,15 @@
             <div class="right d-flex flex-column my-auto">
                 <p class="text-dynamic my-auto text-capitalize">{{ name }}</p>
                 <p class="my-auto small">
-                    <small>{{ last_message }}</small>
+                    {{ $truncate(last_message, 20) }}
                 </p>
             </div>
         </div>
 
         <div class="hour my-auto">
-            <p class="small my-auto">{{ last_time | moment("ddd, hA") }}</p>
+            <p class="small my-auto">
+                <small>{{ $formatNow(last_time, 'es') }}</small>
+            </p>
         </div>
     </div>
 </template>
