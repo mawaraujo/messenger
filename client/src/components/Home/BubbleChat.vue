@@ -1,5 +1,5 @@
 <template>
-    <div class="bubble_wrapper mt-2 d-flex flex-column">
+    <div class="bubble_wrapper mb-2 d-flex flex-column">
         <div 
             v-bind:class="from === 'me' ? 'text-right ml-auto' : 'text-left'"
             class="from mb-0 text-capitalize small">

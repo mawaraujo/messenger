@@ -4,11 +4,11 @@
             type="text" 
             placeholder="Buscar personas o chats"
             v-model="search_input"
-            @change="handleSearch">
+            @keyup="$emit('search', search_input)">
 
         <span 
             class="button pointer small" 
-            @click="$emit('search', true)">
+            @click="$emit('search', search_input)">
             <font-awesome-icon icon="search" />
         </span>
     </div>
@@ -21,13 +21,7 @@ export default {
         return {
             search_input: ''
         }
-    },
-
-    methods: {
-        handleSearch() {
-            this.$emit('output', this.search_input)
-        }
-    },
+    }
 }
 </script>
 

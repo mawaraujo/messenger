@@ -5,6 +5,8 @@ $primary-background: #4395F7;
 $secondary-light-background: #F1F2F7;
 $secondary-dark-background: #383838;
 
+$online-bg: #5CCF68;
+
 $border-app: #F3F5F7;
 $border-dark-app: #2D2F33;
 
@@ -13,6 +15,10 @@ $input-chat-dark-background: #313237;
 
 .primary-bg {
     background: $primary-background;
+}
+
+.online-bg {
+    background: $online-bg;
 }
 
 .light-bg {

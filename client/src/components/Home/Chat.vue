@@ -2,9 +2,30 @@
     <div class="chat_component" id="chat">
         <div class="chat_header d-flex justify-content-between py-3">
             <div class="left my-auto d-flex">
-                <div class="content-title text-capitalize">
-                    <h1 class="h4 text-dynamic my-auto">{{ contact_name }}</h1>
-                    <p class="small my-auto">{{contact_chat_status}}</p>
+                
+                <div class="sub-left mr-3 my-auto">
+                    <router-link
+                        :title="'Ir al perfil de ' + contact_name"
+                        :to="`/profile/${contact_id}`">
+                        
+                        <div class="profile_image rounded-circle mx-auto pointer">
+                            <img 
+                                :src="getUrl + contact_image" 
+                                alt="Profile photo">    
+                        </div>
+                    </router-link>
+                </div>
+
+                <div class="sub-right my-auto">
+                    <div class="content-title text-capitalize">
+                        <router-link 
+                        :title="'Ir al perfil de ' + contact_name"
+                        :to="`/profile/${contact_id}`">
+                            <h1 class="h4 text-dynamic my-auto">{{ contact_name }}</h1>
+                        </router-link>
+
+                        <p class="small my-auto">{{contact_chat_status}}</p>
+                    </div>
                 </div>
             </div>
 
@@ -70,11 +91,20 @@ export default {
         contact_chat_status: {
             required: true,
             type: String
+        },
+
+        contact_image: {
+            required: true,
+            type: String
         }
     },
 
     computed: {
-        ...mapGetters(['getUser', 'getToken'])
+        ...mapGetters(['getUser', 'getToken']),
+
+        getUrl() {
+            return process.env.VUE_APP_URL_STORAGE
+        }
     },
 
     data() {
@@ -175,6 +205,20 @@ export default {
     .chat_component {
         position: relative;
         height: calc(100vh - 6rem);
+
+        .chat_header {
+            .profile_image {
+                width: 40px;
+                height: 40px;
+                overflow: hidden;
+
+                img {
+                    object-fit: cover;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
 
         .card_header {
             position: relative;

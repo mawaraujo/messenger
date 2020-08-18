@@ -7,7 +7,8 @@ Vue.use(VueRouter)
 import login from '@/pages/login/index.vue'
 import register from '@/pages/register/index.vue'
 import home from '@/pages/home/index.vue'
-import profile from '@/pages/profile/index.vue'
+import profileEdit from '@/pages/profile_edit/index.vue'
+import profileView from '@/pages/profile_view/index.vue'
 
 const isAuthenticated = () => {
     return window.localStorage.getItem('auth_token')
@@ -37,8 +38,14 @@ const routes = [
     },
     { 
         path: '/profile', 
-        component: profile, 
-        name: 'profile',
+        component: profileEdit, 
+        name: 'profileEdit',
+        meta: { isPublic: false }
+    },
+    { 
+        path: '/profile/:id', 
+        component: profileView, 
+        name: 'profileView',
         meta: { isPublic: false }
     },
 ]

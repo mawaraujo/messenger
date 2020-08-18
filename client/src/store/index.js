@@ -23,6 +23,14 @@ export default new Vuex.Store({
 
       destroySession: state => {
         state.session_store = []
+      },
+
+      changeUserData: (state, values) => {
+        console.log(values.image)
+        state.session_store[0].auth_user.name = values.name
+        state.session_store[0].auth_user.image = values.image
+        state.session_store[0].auth_user.chat_status = values.chat_status
+        window.localStorage.auth_user = JSON.stringify(state.session_store[0].auth_user)
       }
     },
 

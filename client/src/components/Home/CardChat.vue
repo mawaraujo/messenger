@@ -6,20 +6,20 @@
         <div class="content_ch d-flex my-auto">
             <div class="left my-auto rounded-circle mr-2">
                 <img 
-                    v-if="image"
-                    :src="image" 
-                    class="img-fluid my-auto"
-                    alt="Perfil photo">
-                
-                <img 
-                    v-else
-                    src="@/static/default_people.png" 
+                    :src="getUrl + image" 
                     class="img-fluid my-auto"
                     alt="Perfil photo">
             </div>
 
             <div class="right d-flex flex-column my-auto">
-                <p class="text-dynamic my-auto text-capitalize">{{ name }}</p>
+                <div class="name-wrapper d-flex">
+                    <span 
+                        :title="online_status ? 'Conectado' : 'Desconectado'"
+                        v-bind:class="online_status ? 'online-bg' : 'secondary-bg'"
+                        class="my-auto circle rounded-circle mr-2">
+                    </span>
+                    <p class="text-dynamic my-auto text-capitalize">{{ name }}</p>
+                </div>
                 <p class="my-auto small">
                     {{ $truncate(last_message, 20) }}
                 </p>
@@ -56,8 +56,35 @@ export default {
         last_time: {
             required: true,
             type: String
+        },
+
+        online_status: {
+            required: true,
+            type: Boolean
         }
-    }
+    },
+
+    data() {
+        return {
+            contact_status: false
+        }
+    },
+
+    computed: {
+        getUrl() {
+            return process.env.VUE_APP_URL_STORAGE
+        }
+    },
+
+    created() {
+        this.contact_status = this.online_status
+    },
+
+    watch: {
+        status: function() {
+            this.contact_status = this.online_status
+        }
+    },
 }
 </script>
 
@@ -73,6 +100,15 @@ export default {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+            }
+        }
+
+        .right {
+            .name-wrapper {
+                .circle {
+                    width: 10px;
+                    height: 10px;
+                }
             }
         }
     }

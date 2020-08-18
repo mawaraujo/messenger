@@ -13,14 +13,17 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
+// Definimos un callback, para autorizar solo al usuario con el permiso
+Broadcast::channel('users.{id}', function($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('users.{id}', function($user, $message) {
-    if($message) {
-        return $message;
+// Autorizamos en un presence channel
+Broadcast::channel('messenger', function($user) {
+    if ($user) {
+        $response = $user->toArray();
+        return $response;
     }
-
+    
     return false;
 });

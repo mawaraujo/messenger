@@ -2,7 +2,7 @@
     <header class="px-3 d-flex justify-content-between card-bg border-bottom-c">
         <div class="branding">
             <router-link to="/home" class="text-capitalize">
-                <div class="img-wrapper d-flex align-items-center">
+                <div class="img-wrapper d-flex align-items-center" title="Mi perfil">
                     <img 
                         src="@/static/brand.png" 
                         width="100%" 
@@ -19,19 +19,13 @@
                 Inicio
             </router-link>
 
-            <a 
-                class="pointer mr-3" 
-                @click="handleLogout">
-                Cerrar sesión
-            </a>
-
             <router-link 
                 to="/profile" 
                 class="text-capitalize">
 
                 <div class="profile-image">
                     <img 
-                        src="@/static/default_people.png" 
+                        :src="getUrl + user_image" 
                         alt="Profile image">
                 </div>
             </router-link>
@@ -40,7 +34,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
     name: 'Header',
@@ -48,39 +42,27 @@ export default {
     data() {
         return {
             user_name: '',
+            user_image: '',
         }
     },
     
     computed: {
-        ...mapState(['session_store'])
+        ...mapState(['session_store']),
+
+        getUrl() {
+            return process.env.VUE_APP_URL_STORAGE
+        }
     },
 
     mounted() {
-        this.$nextTick(() => {
-            this.getNameUser()
-        })
+        this.$nextTick(() => this.getUser())
     },
 
     methods: {
-        ...mapMutations(['destroySession']),
-
-        async handleLogout() {
-
-            this.axios.post('logout')
-            .then(response => {
-
-                console.log(response.data)
-                this.destroySession()
-                window.localStorage.removeItem('auth_token')
-                window.localStorage.removeItem('auth_user')
-                this.$router.push('/login')
-            })
-            .catch(error => console.log(error))
-        },
-
-        getNameUser() {
+        getUser() {
             const user = this.session_store[0].auth_user
             this.user_name = user.name 
+            this.user_image = user.image
         }
     }
 }
