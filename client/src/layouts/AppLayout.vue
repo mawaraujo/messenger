@@ -1,10 +1,12 @@
 <template>
     <main class="main_app">
-        <Header />
-
         <div class="wrapper">
-            <div class="left sidebar card-bg py-3 border-right-c">
-                    <slot class="search_wrapper" name="search_wrapper"></slot>
+            <div class="first menu card-bg primary-bg d-flex flex-column">
+                <Header />
+            </div>
+
+            <div class="left sidebar card-bg py-2 border-right-c pt-3">
+                    <slot class="search_wrapper mt-3" name="search_wrapper"></slot>
                     <slot class="chats_wrapper" name="chats_wrapper"></slot>
             </div>
 
@@ -16,10 +18,11 @@
 </template>
 
 <script>
-import Header from '@/components/Home/Header.vue'
+import Header from '@/components/Home/Header'
 
 export default {
     name: 'AppLayout',
+
     components: {
         Header
     },
@@ -32,25 +35,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    $height: 4rem;
-
     .content {
         height: 100%;
-        min-height: calc(100vh - $height);
+        height: 100vh;
     }
 
     .wrapper{
+        .first {
+            float: left;
+            max-width: 50px;
+            width: 100%;
+        }
+
         .left.sidebar {
             float: left;
-            max-width: 340px;
+            max-width: 320px;
             width: 100%;
-            height: calc(100vh - 4rem);
+            height: 100vh;
         }
 
         .right.content {
             float: left;
-            width: calc(100% - 340px);
-            height: calc(100vh - $height);
+            width: calc(100% - 320px - 50px);
+            height: 100vh;
         }
     }
 </style>

@@ -32,27 +32,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -62,17 +41,6 @@ class UserController extends Controller
     {
         UserResource::withoutWrapping();
         return $this->sendResponse(new UserResource($user), 'User found');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -92,7 +60,8 @@ class UserController extends Controller
             'image' => 'mimes:jpeg,jpg,png|nullable',
             'name' => 'string|nullable',
             'chat_status' => 'string|nullable',
-            'password' => 'string|min:6|confirmed|nullable'
+            'password' => 'string|min:6|confirmed|nullable',
+            'chat_background' => 'mimes:jpeg,jpg,png|nullable'
         ]);
 
         if($validator->fails()) {
@@ -114,22 +83,39 @@ class UserController extends Controller
         }
 
         if($request->image) {
-            $file = $request->image;
-            $path = public_path('/users');
-            $file_name = time() . '.' . $file->getClientOriginalExtension();
-            $file->move($path, $file_name);
+            $file_name = $this->saveImage('profile_image', $request->image, $request->user()->image);
+            $query->image = $file_name; //Guardamos el nombre del archivo
+        }
 
-            //Eliminamos el archivo anterior utilizado por el usuario
-            $deletedFile = public_path() .  '/' . 'users/' . $request->user()->image;
-            unlink($deletedFile);
-
-            //Guardamos el nombre del archivo
-            $query->image = $file_name;
+        if($request->chat_background) {
+            $file_name = $this->saveImage('chat_background', $request->chat_background, $request->user()->chat_background);
+            $query->chat_background = $file_name;
         }
 
         $query->save();
 
         return $this->sendResponse(new userResource($query), 'Usuario modificado con éxito');
+    }
+
+    //  Type: 'profile_image', 'chat_background' 
+    public function saveImage($type, $file, $user_local_file) {
+
+        if($type === 'profile_image') {
+            $path = public_path('/users/profile_image');
+            $deletedFile = public_path() .  '/' . 'users/profile_image/' . $user_local_file;
+
+        } else if($type === 'chat_background') {
+            $path = public_path('/users/chat_background');
+            $deletedFile = public_path() .  '/' . 'users/chat_background/' . $user_local_file;
+        }
+
+        if($user_local_file !== 'default.png') {
+            unlink($deletedFile);
+        }
+
+        $file_name = time() . '.' . $file->getClientOriginalExtension();
+        $file->move($path, $file_name);
+        return $file_name;
     }
     
     /**

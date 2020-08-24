@@ -1,23 +1,27 @@
 <template>
     <main class="profile-view container-fluid card-bg">
-        <Header />
+        <div class="left">
+            <Header />
+        </div>
 
-        <div class="row d-flex align-items-center py-5">
-            <div class="col-12 text-center">
-                    <div class="profile_image rounded-circle mx-auto mb-3">
-                        <img 
-                            :src="getUrl + data.image" 
-                            alt="Profile photo">    
-                    </div>
+        <div class="right">
+            <div class="row d-flex align-items-center py-5">
+                <div class="col-12 text-center">
+                        <div class="profile_image rounded-circle mx-auto mb-3">
+                            <img 
+                                :src="getUrl + data.image" 
+                                alt="Profile photo">    
+                        </div>
 
-                <h1 class="text-dynamic text-capitalize">{{data.name}}</h1>
-                <p class="">{{data.chat_status}}</p>
+                    <h1 class="text-dynamic text-capitalize">{{data.name}}</h1>
+                    <p class="">{{data.chat_status}}</p>
 
-                <button 
-                    @click="handleAdd"
-                    class="btn btn-primary rounded-pill px-4">
-                    Añadir amigo
-                </button>
+                    <button 
+                        @click="handleAdd"
+                        class="btn btn-primary rounded-pill px-4">
+                        Añadir amigo
+                    </button>
+                </div>
             </div>
         </div>
     </main>
@@ -74,18 +78,30 @@ export default {
 
 <style lang="scss" scoped>
     .container-fluid {
-        .row {
-            height: calc(100vh - 4rem);
+        padding: 0 !important;
 
-            .profile_image {
-                width: 160px;
-                height: 160px;
-                overflow: hidden;
+        .left {
+            float: left;
+            max-width: 50px;
+            width: 100%;
+        }
 
-                img {
-                    object-fit: cover;
-                    width: 100%;
-                    height: 100%;
+        .right {
+            width: calc(100% - 50px);
+            
+            .row {
+                height: 100vh;
+
+                .profile_image {
+                    width: 160px;
+                    height: 160px;
+                    overflow: hidden;
+
+                    img {
+                        object-fit: cover;
+                        width: 100%;
+                        height: 100%;
+                    }
                 }
             }
         }

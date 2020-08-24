@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import '@/assets/css/build.min.css'
 import '@/assets/css/app.css'
+import '@/assets/css/mawui.min.css'
 import { mapMutations } from 'vuex'
 
 export default {

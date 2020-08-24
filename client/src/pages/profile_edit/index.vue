@@ -1,72 +1,75 @@
 <template>
     <main class="profile_page">
-        <Header />
-
         <section class="container-fluid card-bg d-flex align-items-center">
-            <div class="row">
+            <div class="left">
+                <Header />
+            </div>
 
-                <div class="my-auto col-md-6 profile-data" v-if="set_change === 0">
-                    <div class="profile_image rounded-circle mx-auto mb-3">
-                        <img 
-                            :src="getUrl + user.image" 
-                            alt="Profile photo">    
+            <div class="right">
+                <div class="row mx-0  py-5">
+                    <div class="my-auto col-md-6 profile-data" v-if="set_change === 0">
+                        <div class="profile_image rounded-circle mx-auto mb-3">
+                            <img 
+                                :src="getUrl + user.image" 
+                                alt="Profile photo">    
+                        </div>
+
+                        <h1 class="text-dynamic text-capitalize my-auto px-5 mt-5">{{user.name}}</h1>
+                        
+                        <fieldset class="form-items px-5 mt-3">
+                            <label for="input_status">Estado: </label>
+                            <input
+                                class="control regular rounded-lg text-center" 
+                                type="text" 
+                                ref="input_status"
+                                @keyup.enter="handleStatus"
+                                v-model="user.chat_status">
+
+                            <div class="alert alert-success py-2 mt-0 rounded-lg" v-if="status_changed">
+                                <p cass="my-auto">Estado actualizado correctamente.</p>
+                            </div>
+                        </fieldset>
                     </div>
 
-                    <h1 class="text-dynamic text-capitalize my-auto px-5 mt-5">{{user.name}}</h1>
-                    
-                    <fieldset class="form-items px-5 mt-3">
-                        <label for="input_status">Estado: </label>
-                        <input
-                            class="control regular rounded-lg text-center" 
-                            type="text" 
-                            ref="input_status"
-                            @keyup.enter="handleStatus"
-                            v-model="user.chat_status">
+                    <div class="my-auto col-md-6 mx-auto px-5 d-flex justify-content-center align-items-center">
+                        <template v-if="set_change === 0">
+                            <div class="d-flex flex-column">
+                                <button 
+                                    @click="set_change = 1"
+                                    class="btn btn-light-primary rounded-pill px-5">
+                                    Modificar datos personales
+                                </button>
 
-                        <div class="alert alert-success py-2 mt-0 rounded-lg" v-if="status_changed">
-                            <p cass="my-auto">Estado actualizado correctamente.</p>
-                        </div>
-                    </fieldset>
+                                <button 
+                                    @click="set_change = 2"
+                                    class="btn btn-light-primary mt-2 rounded-pill px-5">
+                                    Modificar contraseña
+                                </button>
+
+                                <button 
+                                    @click="handleLogout"
+                                    class="btn btn-light-dark mt-2 rounded-pill px-5">
+                                    Cerrar sesión
+                                </button>
+                            </div>
+                        </template>
+
+                        <template v-if="set_change === 1">
+                            <ChangeProfileInfo 
+                                :user_id="user.id"
+                                :user_name="user.name"
+                                :user_email="user.email" 
+                                :user_image="user.image" 
+                                @sucessDataChanged="updateUser($event)"
+                                @back="set_change = 0" />
+                        </template>
+
+                        <template v-if="set_change === 2">
+                            <ChangePassword @back="set_change = 0" />
+                        </template>
+                    </div>
+
                 </div>
-
-                <div class="my-auto col-md-6 mx-auto px-5 d-flex justify-content-center align-items-center">
-                    <template v-if="set_change === 0">
-                        <div class="d-flex flex-column">
-                            <button 
-                                @click="set_change = 1"
-                                class="btn btn-light-primary rounded-pill px-5">
-                                Modificar datos personales
-                            </button>
-
-                            <button 
-                                @click="set_change = 2"
-                                class="btn btn-light-primary mt-2 rounded-pill px-5">
-                                Modificar contraseña
-                            </button>
-
-                            <button 
-                                @click="handleLogout"
-                                class="btn btn-light-dark mt-2 rounded-pill px-5">
-                                Cerrar sesión
-                            </button>
-                        </div>
-                    </template>
-
-                    <template v-if="set_change === 1">
-                        <ChangeProfileInfo 
-                            :user_id="user.id"
-                            :user_name="user.name"
-                            :user_email="user.email" 
-                            :user_image="user.image" 
-                            @sucessDataChanged="updateUser($event)"
-                            @back="set_change = 0" />
-                    </template>
-
-                    <template v-if="set_change === 2">
-                        <ChangePassword @back="set_change = 0" />
-                    </template>
-                </div>
-
             </div>
         </section>
 
@@ -166,8 +169,20 @@ export default {
 
 <style lang="scss" scoped>
     .container-fluid {
-        min-height: calc(100vh - 4rem);
-        height: 100%;
+        height: 100vh;
+        padding: 0 !important;
+
+        .left {
+            float: left;
+            max-width: 50px;
+            width: 100%;
+        }
+
+        .right {
+            float: left;
+            overflow-y: scroll;
+            width: calc(100% - 50px);
+        }
 
         .profile_image {
             width: 160px;

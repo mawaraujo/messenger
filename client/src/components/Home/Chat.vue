@@ -1,7 +1,7 @@
 <template>
     <div class="chat_component" id="chat">
-        <div class="chat_header d-flex justify-content-between py-3">
-            <div class="left my-auto d-flex">
+        <div class="chat_header card-bg px-3 d-flex justify-content-between align-items-center py-2">
+            <div class="left d-flex">
                 
                 <div class="sub-left mr-3 my-auto">
                     <router-link
@@ -16,28 +16,23 @@
                     </router-link>
                 </div>
 
-                <div class="sub-right my-auto">
+                <div class="sub-right">
                     <div class="content-title text-capitalize">
                         <router-link 
                         :title="'Ir al perfil de ' + contact_name"
                         :to="`/profile/${contact_id}`">
-                            <h1 class="h4 text-dynamic my-auto">{{ contact_name }}</h1>
+                            <h6 class="text-dynamic my-auto">{{ contact_name }}</h6>
                         </router-link>
 
-                        <p class="small my-auto">{{contact_chat_status}}</p>
+                        <p class="small my-auto">
+                            <small>{{is_online == true ? 'En linea' : contact_chat_status }}</small>
+                        </p>
                     </div>
                 </div>
             </div>
-
-            <div class="right my-auto">
-                <p class="my-auto h4 pointer">
-                    <font-awesome-icon icon="cog" />
-                    <!-- <button class="btn btn-light-primary rounded-lg">Opciones del chat</button> -->
-                </p>
-            </div>
         </div>
         
-        <div ref="chat_body" class="card_body py-3 px-4 d-flex flex-column">
+        <div ref="chat_body" class="card_body py-3 px-4 d-flex flex-column mt-2">
             <div v-for="message in messages" :key="message.id">
                 <BubbleChat
                     :from="message.from_id === me.id ? 'me' : 'other'"
@@ -46,19 +41,17 @@
         </div>
 
         <div class="card_input d-flex align-items-center rounded-lg py-2">
-            <div class="textarea border-c my-auto shadow-sm rounded-lg mr-3">
+            <div class="textarea my-auto rounded-lg mx-3 card-blur-bg d-flex">
                 <textarea 
                     @keyup.enter="submitMessage"
                     v-model="message_field"
                     placeholder="Escribe tu mensaje aquí"
                     class="input_field regular-font pt-3 px-3">
                 </textarea>
-            </div>
 
-            <div class="submit my-auto">
                 <button
                     @click="submitMessage" 
-                    class="btn btn-light-primary rounded-pill my-auto px-4">
+                    class="btn btn-primary rounded-lg my-auto mr-3">
                     Enviar
                 </button>
             </div>
@@ -96,6 +89,11 @@ export default {
         contact_image: {
             required: true,
             type: String
+        },
+
+        online_status: {
+            required: true,
+            type: Boolean
         }
     },
 
@@ -112,7 +110,7 @@ export default {
             message_field: '',
             messages: [],
             me: {}, 
-            is_online: true
+            is_online: false
         }
     },
 
@@ -133,6 +131,7 @@ export default {
 
     updated() {
         this.handleScrollToBottom()
+        this.online_status === true ? this.is_online = true : this.is_online = false
     },
 
     methods: {
@@ -200,11 +199,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    //$height: 4rem;
-
     .chat_component {
-        position: relative;
-        height: calc(100vh - 6rem);
+        height: 100%;
 
         .chat_header {
             .profile_image {
@@ -220,15 +216,10 @@ export default {
             }
         }
 
-        .card_header {
-            position: relative;
-        }
-
         .card_body {
             scroll-behavior: smooth;   
             width: 100%;
-            max-height: calc(100vh - 16.5rem);
-            height: 100%;
+            height: calc(100vh - 9.9rem);
             overflow-y: scroll;
             
             /* Tamaño del scroll */

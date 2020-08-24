@@ -21,7 +21,16 @@ $input-chat-dark-background: #313237;
     background: $online-bg;
 }
 
-.light-bg {
+.card-blur-bg {
+    backdrop-filter: blur(10px);
+}
+
+.light-background {
+    .card-blur-bg {
+        background: rgba(255, 255, 255, 0.822);
+        color: rgb(31, 31, 31);
+    }
+
     .secondary-bg {
         background: $secondary-light-background;
     }
@@ -29,7 +38,7 @@ $input-chat-dark-background: #313237;
     .secondary-bg-hover:hover {
         background: $secondary-light-background;
     }
-
+    
     .border-bottom-c {
         border-bottom: 1px solid $border-app;
     }
@@ -47,7 +56,13 @@ $input-chat-dark-background: #313237;
     }
 }
 
-.dark-bg {
+.dark-background {
+    .card-blur-bg {
+        background: rgba(0, 0, 0, 0.514);
+        color: rgb(255, 255, 255);
+        textarea { color: white; }
+    }
+
     .secondary-bg {
         background: $secondary-dark-background;
     }

@@ -12,7 +12,7 @@
                 <CardChat
                     v-bind:class="{'secondary-bg': conversation.contact.id === selected_chat.id}"
                     :key="conversation.id"
-                    @clicked="handleChat(conversation.contact)" 
+                    @clicked="handleChat(conversation.contact, conversation.online_status)" 
                     :name="conversation.contact.name"
                     :image="conversation.contact.image"
                     :online_status="conversation.online_status && conversation.online_status === true ? conversation.online_status : false"
@@ -31,23 +31,26 @@
         </div>
 
         <!-- Main chat wrapper -->
-        <div class="container-fluid card-bg" slot="content">
-            <div class="row">
-                <div class="col-12 py-3" v-if="selected_chat.name.length > 0">
-                    <Chat 
-                        :contact_id="selected_chat.id"
-                        :contact_name="selected_chat.name"
-                        :contact_image="selected_chat.image"
-                        :contact_chat_status="selected_chat.chat_status" 
-                        @sending="getConversations()" />
-                </div>
+        <div 
+            v-bind:class="current_user.chat_background ? changeChatBackground() : 'card-bg'"
+            id="chat-wrapper"
+            slot="content">
 
-                <!-- Convertir en un componente -->
-                <div class="col-12" v-else>
-                   <EmptyChat />
-                </div>
-                <!-- Convertir en un componente -->
+            <div class="" v-if="selected_chat.name.length > 0">
+                <Chat 
+                    :contact_id="selected_chat.id"
+                    :contact_name="selected_chat.name"
+                    :contact_image="selected_chat.image"
+                    :contact_chat_status="selected_chat.chat_status" 
+                    :online_status="selected_chat.online_status && selected_chat.online_status === true ? selected_chat.online_status : false"
+                    @sending="getConversations()" />
             </div>
+
+            <!-- Convertir en un componente -->
+            <div v-else>
+                <EmptyChat />
+            </div>
+             <!-- Convertir en un componente -->
         </div>
     </AppLayout>
 
@@ -78,34 +81,44 @@ export default {
             selected_chat: {
                 id: '',
                 name: '',
-                chat_status: ''
+                chat_status: '',
+                online_status: false,
             },
-            conversations: []
+            conversations: [],
+            current_user: []
         }
     },
 
     computed: {
-        ...mapGetters(['getToken']),
+        ...mapGetters(['getToken', 'getUser']),
 
         conversationsFiltered() {
             return this.conversations.filter((conversation) => {
                 if(this.search_text.length > 0) return conversation.contact.name.includes(this.search_text)
                 else return conversation
             })
+        },
+
+        getUrl() {
+            return process.env.VUE_APP_URL_STORAGE
         }
     },
 
     async mounted() {
         await this.getConversations()
-        this.$nextTick(() => this.initialize())
+        this.$nextTick(() => {
+            this.initialize()
+            this.current_user = this.getUser
+        })
     },
 
     methods: {
-        handleChat(contact) {
+        handleChat(contact, status) {
             this.selected_chat.id = contact.id
             this.selected_chat.name = contact.name
             this.selected_chat.chat_status = contact.chat_status
             this.selected_chat.image = contact.image
+            this.$set(this.selected_chat, 'online_status', status)
         },
 
         async getConversations() {
@@ -148,7 +161,18 @@ export default {
                     else this.$set(conversation, 'online_status', false)
                 }
             })
-        }
+        },
+
+        changeChatBackground() {
+            document.getElementById('chat-wrapper').style.background = `url('${this.getUrl}${this.current_user.chat_background}')`
+        },
     },
 }
 </script>
+
+<style lang="scss" scoped>
+    .container-fluids {
+        width: 100%;
+        height: 100%;
+    }
+</style>

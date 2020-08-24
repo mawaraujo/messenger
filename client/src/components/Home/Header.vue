@@ -1,40 +1,39 @@
 <template>
-    <header class="px-3 d-flex justify-content-between card-bg border-bottom-c">
-        <div class="branding">
-            <router-link to="/home" class="text-capitalize">
-                <div class="img-wrapper d-flex align-items-center" title="Mi perfil">
-                    <img 
-                        src="@/static/brand.png" 
-                        width="100%" 
-                        alt="Brand">
-                </div>
+    <header class="py-3 w-100 text-cente d-flex flex-column align-items-center secondary-bg">
+        <router-link
+            title="Perfil" 
+            to="/profile" 
+            class="text-capitalize d-flex flex-column">
+
+            <div class="profile-image">
+                <img 
+                    :src="getUrl + user_image" 
+                    alt="Profile image">
+            </div>
+        </router-link>
+
+        <div class="link mt-3" title="Inicio">
+            <router-link to="/home">
+                <font-awesome-icon class="text-dynamic" icon="home" />
             </router-link>
         </div>
 
-        <nav class="navigation d-flex">
-            <router-link 
-                to="/home" 
-                class="text-capitalize mr-3">
-
-                Inicio
+        <div class="link mt-3" title="Perfil">
+            <router-link to="/profile">
+                <font-awesome-icon class="text-dynamic" icon="user" />
             </router-link>
+        </div>
 
-            <router-link 
-                to="/profile" 
-                class="text-capitalize">
-
-                <div class="profile-image">
-                    <img 
-                        :src="getUrl + user_image" 
-                        alt="Profile image">
-                </div>
-            </router-link>
-        </nav>
+        <div class="link mt-3" title="Cerrar sesión">
+            <div class="pointer" @click="handleLogout">
+                <font-awesome-icon class="text-dynamic" icon="sign-out-alt" />
+            </div>
+        </div>
     </header>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
     name: 'Header',
@@ -59,36 +58,48 @@ export default {
     },
 
     methods: {
+        ...mapMutations(['destroySession']),
+
         getUser() {
             const user = this.session_store[0].auth_user
             this.user_name = user.name 
             this.user_image = user.image
-        }
+        },
+        
+        async handleLogout() {
+            this.axios.post('logout')
+            .then(response => {
+                this.destroySession()
+                window.localStorage.removeItem('auth_token')
+                window.localStorage.removeItem('auth_user')
+                this.$router.push('/login')
+                return response
+            })
+            .catch(error => console.log(error))
+        },
     }
 }
 </script>
 
 <style lang="scss" scoped>
     header {
-        height: 4rem;
-        line-height: 4rem;
+        height: 100vh;
 
-        .img-wrapper{
-            width: 40px;
-            height: 100%;
-
-            img {
-                margin: auto 0;
-                width: 100%;
-            }
+        .link {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            background: #e2e2e4;
         }
 
         .profile-image {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
+            margin: auto 0;
             border-radius: 50%;
             overflow: hidden;
-            margin-top: calc(2rem - 50%);
 
             img {
                 object-fit: cover;

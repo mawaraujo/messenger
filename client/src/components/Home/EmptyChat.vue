@@ -1,5 +1,5 @@
 <template>
-    <div class="empty-chat d-flex flex-column align-items-center justify-content-center card-bg">
+    <div class="empty-chat d-flex flex-column align-items-center justify-content-center">
         <p class="h3 text-capitalize">Hola, {{name}}</p>
         <h2 class="title text-dynamic h3">Inicia una conversación para continuar</h2>
     </div>
@@ -28,7 +28,7 @@ export default {
 
 <style lang="scss" scoped>
     .empty-chat {
-        height: calc(100vh - 4rem);
+        height: 100vh;
         width: 100%;
     }
 </style>
